@@ -11,8 +11,6 @@ void setup()
     pinMode(photoresistor, INPUT); //Sets photodiode to be an input
     NLDtrigger = false;
     LDtrigger = false;
-    bool Activelight = true;
-    bool InactiveLight = true;
 }
 
 void loop() 
@@ -21,25 +19,21 @@ void loop()
     //Function has a trigger. If it is false, it will publish an email, and then change trigger to true so it doesn't publish again.
     //Else, it won't send an email trigger and it will just continue monitoring current light levels.
     
-    if ((analogValue <= 20) && (NLDtrigger == false))//Light level range for low light
+    if ((analogValue <= 50) && (NLDtrigger == false))//Light level range for low light
     {
-        Particle.publish("light_level", "No light detected in terrarium.", PRIVATE);
+        Particle.publish("ActiveLight", "No light detected in terrarium.", PRIVATE);
         //Particle.publish("light_level", String(analogValue), PRIVATE);
         NLDtrigger=true;
         LDtrigger = false;
-        InactiveLight;
+        
     }
-    else if ((analogValue > 20) && (LDtrigger == false))
+    else if ((analogValue > 50) && (LDtrigger == false))
     {
-        Particle.publish("light_level", "Light has been detected in terrarium.", PRIVATE);
+        Particle.publish("ActiveLight", "Light has been detected in terrarium.", PRIVATE);
         //Particle.publish("light_level", String(analogValue), PRIVATE);
         LDtrigger=true;
         NLDtrigger = false;
-        ActiveLight;
-    }
-    else
-    {
-        Particle.publish("light_level", String(analogValue), PRIVATE);
+        
     }
     delay(5s);
 }  
